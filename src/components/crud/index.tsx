@@ -61,20 +61,10 @@ export default function Crud({
 		}
 	};
 	const updateData = async (values: any) => {
-		const data = {
-			keys: [],
-			values: [],
-		} as any;
-		Object.entries(values).forEach(([key, value]) => {
-			if (value) {
-				data.keys.push(key);
-				data.values.push(value);
-			}
-		});
 		if (editableData) {
 			try {
 				await updateDoc(doc(firestore, `${path}/${editableData.id}`), {
-					...data,
+					...values,
 				});
 			} catch (e) {
 				console.log(e);
@@ -84,7 +74,7 @@ export default function Crud({
 		} else {
 			try {
 				await addDoc(collection(firestore, path), {
-					...data,
+					...values,
 				});
 			} catch (e) {
 				console.log(e);
