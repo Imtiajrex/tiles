@@ -80,7 +80,7 @@ export function Update(props: UpdateProps) {
 								key={input.id}
 								label={input.label}
 								value={values[input.id]}
-								onChange={(url) =>
+								onChange={(url: string) =>
 									setValues((prev) => ({
 										...prev,
 										[input.id]: url,
