@@ -24,6 +24,9 @@ type CrudProps = {
 	schema?: z.ZodObject<any, any>;
 	path: string;
 	headers: HeaderType[];
+	create?: boolean;
+	edit?: boolean;
+	actions?: (data: any) => React.ReactNode;
 };
 export default function Crud({
 	title,
@@ -31,6 +34,9 @@ export default function Crud({
 	schema,
 	path,
 	headers,
+	create = true,
+	edit = true,
+	actions,
 }: CrudProps) {
 	const [deletableData, setDeletableData] =
 		React.useState<Record<string, string>>();
@@ -152,16 +158,18 @@ export default function Crud({
 			/>
 			<div className="flex items-center gap-2">
 				<h1 className="text-xl font-bold">{title}</h1>
-				<Button
-					size={"sm"}
-					className="gap-2"
-					onClick={() => {
-						setIsAdderOpen(true);
-					}}
-				>
-					Add {title}
-					<Plus className="w-4 h-4" />
-				</Button>
+				{create && (
+					<Button
+						size={"sm"}
+						className="gap-2"
+						onClick={() => {
+							setIsAdderOpen(true);
+						}}
+					>
+						Add {title}
+						<Plus className="w-4 h-4" />
+					</Button>
+				)}
 			</div>
 			<DataTable
 				headers={[
@@ -171,15 +179,18 @@ export default function Crud({
 						key: "actions",
 						customRender: (data) => (
 							<div className="flex gap-2">
-								<Button
-									size="sm"
-									variant={"outline"}
-									onClick={() => {
-										setEditableData(data);
-									}}
-								>
-									<Edit className="w-4 h-4" />
-								</Button>
+								{actions && actions(data)}
+								{edit && (
+									<Button
+										size="sm"
+										variant={"outline"}
+										onClick={() => {
+											setEditableData(data);
+										}}
+									>
+										<Edit className="w-4 h-4" />
+									</Button>
+								)}
 								<Button
 									size="sm"
 									variant={"outline"}

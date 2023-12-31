@@ -55,6 +55,16 @@ export default function DataTable({
 						</TableCell>
 					</TableRow>
 				)}
+				{data.length == 0 && !isLoading && (
+					<TableRow>
+						<TableCell
+							colSpan={headers.length}
+							className="flex items-center justify-center p-2 w-full text-center flex-1"
+						>
+							No data
+						</TableCell>
+					</TableRow>
+				)}
 				{data.map((row, index) => (
 					<TableRow key={`row.${index}`}>
 						{headers.map((header) => (
