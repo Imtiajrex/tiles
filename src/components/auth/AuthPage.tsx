@@ -26,7 +26,7 @@ export default function AuthPage({
 			</a>
 			<Button
 				onClick={() => {
-					router.push(!login ? "/login" : "/signup");
+					router.push(!login ? "/admin/login" : "/admin/signup");
 				}}
 				variant="ghost"
 				className="absolute right-4 top-4 md:right-8 md:top-8"

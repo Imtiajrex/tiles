@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import React, { useEffect } from "react";
+import Uploader from "../ui/uploader";
 export type InputType = {
 	id: string;
 	label: string;
@@ -73,23 +74,39 @@ export function Update(props: UpdateProps) {
 					)}
 				</DialogHeader>
 				<form className="grid gap-4 py-4" onSubmit={handleSubmit}>
-					{props.inputs.map((input: InputType) => (
-						<Input
-							key={input.id}
-							label={input.label}
-							defaultValue={input.defaultValue}
-							className={input.className}
-							type={input.type}
-							value={values[input.id]}
-							onChange={(e) =>
-								setValues((prev) => ({
-									...prev,
-									[input.id]: e.target.value,
-								}))
-							}
-							error={error[input.id]}
-						/>
-					))}
+					{props.inputs.map((input: InputType) =>
+						input.type == "image" ? (
+							<Uploader
+								key={input.id}
+								label={input.label}
+								value={values[input.id]}
+								onChange={(url) =>
+									setValues((prev) => ({
+										...prev,
+										[input.id]: url,
+									}))
+								}
+								path={"products"}
+								multiple={false}
+							/>
+						) : (
+							<Input
+								key={input.id}
+								label={input.label}
+								defaultValue={input.defaultValue}
+								className={input.className}
+								type={input.type}
+								value={values[input.id]}
+								onChange={(e) =>
+									setValues((prev) => ({
+										...prev,
+										[input.id]: e.target.value,
+									}))
+								}
+								error={error[input.id]}
+							/>
+						)
+					)}
 					<DialogFooter>
 						<Button type="submit" isLoading={isSaving}>
 							Save changes

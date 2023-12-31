@@ -9,8 +9,9 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, firestore } from "@/lib/firebase";
 import { useToast } from "../ui/use-toast";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 export default function AuthForm({
 	className,
@@ -36,6 +37,18 @@ export default function AuthForm({
 				await signInWithEmailAndPassword(auth, data.email, data.password);
 			else
 				await createUserWithEmailAndPassword(auth, data.email, data.password);
+
+			const user = await getDocs(
+				query(collection(firestore, "admins"), where("email", "==", data.email))
+			);
+			if (user.size == 0) {
+				toast({
+					title: "Error",
+					description: "You are not an admin",
+				});
+				setIsLoading(false);
+				return;
+			}
 			router.push("/admin");
 			setIsLoading(false);
 			toast({
